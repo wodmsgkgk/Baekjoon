@@ -1,0 +1,67 @@
+///////////////////Ω∫≈√ ///////////////////////////////
+
+package Main;
+
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		int N;
+		int s = 1;
+		int t = 1;
+		int j = 1;
+		int p = 0;
+		boolean flag = true;
+
+		Scanner scan = new Scanner(System.in);
+		N = scan.nextInt();
+		
+		int[] num = new int[N+1];
+		int[] stack = new int[N+1];
+		int[] numList = new int[N+1];
+		char[] pm = new char[N*2];
+
+		for (int i = 1; i <= N; i++) {
+			num[i] = scan.nextInt();
+			numList[i] = i;
+		}
+		
+		while (j <= N) {
+			if (numList[t - 1] > num[j]) {
+				System.out.println("NO");
+				flag = false;
+				break;
+			}
+			if(t<=N){
+			while (numList[t] <= num[j]) {
+				stack[s] = numList[t];
+				// System.out.println("push"+stack[s]);
+				pm[p]='+';
+				p++;
+				t++;
+				s++;
+				if (t == N+1)
+					break;
+			}
+			}
+			
+			if(s>=1){
+			while (stack[s - 1] == num[j]) {
+				   //System.out.println("pop"+stack[s-1]);
+				s--;
+				j++;
+				pm[p]='-';
+				p++;
+				if (s == 1)
+					break;
+			}
+			}
+		}
+		if (flag) {
+			  for(int i =0 ; i<p ; i++) 
+			   System.out.println(pm[i]);
+		}
+	}
+}

@@ -1,0 +1,25 @@
+///////////////////이항계수 ///////////////////////////////
+
+package Main;
+
+import java.util.Scanner;
+
+class Main {
+	public static void main(String[] args) {
+		int n, k;
+		Scanner scan = new Scanner(System.in);
+		n = scan.nextInt();
+		k = scan.nextInt();
+		int[][] num = new int[n+1][n+1];
+		
+		for(int i = 0 ; i<=n ; i++){
+			for(int j = 0 ; j<=i ; j++){
+				if(i == j || j == 0) num[i][j] =1;
+				else{
+					num[i][j] = (num[i-1][j-1] + num[i-1][j])%10007;
+				}
+			}
+		}
+		System.out.println(num[n][k]);		
+	}
+}

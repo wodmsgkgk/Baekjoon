@@ -1,0 +1,78 @@
+
+//////////////////////////평균값구하기///////////////////////////////////////////////
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Coordinate {
+    public static void main(String[] args) {
+        ArrayList<Integer> numberList = new ArrayList<Integer>();
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+            String input = br.readLine();
+            String[] numStrList = input.split(" ");
+            for (String numStr : numStrList) {
+                numberList.add(Integer.parseInt(numStr));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 다음과 같은 방식으로 numberList와 number 변수를 사용할 수 있음
+        /*
+        for (Integer number : numberList) {            }
+        */
+
+        // write your code here
+      float sum = 0;
+      int j =0;
+      for (Integer number : numberList) {
+      	sum += number;
+        if(number != 0) j++;
+      }
+System.out.println("" + sum/j);
+
+    }
+}
+
+//////////////////////////////문자열 길이구하기////////////////////////////////////////////
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+public class CharacterSequence {
+    public static void main(String[] args) {
+        String[] words = null;
+        
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+            String line = br.readLine();
+            words = line.split(" ");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        // 다음과 같은 방식으로 words와 word 변수를 사용할 수 있음
+        /*
+        for (String word : words) {
+            
+        }
+       
+        */
+
+        // write your code here
+		int i;
+  	int sum=0;
+        for (String word : words) {
+            sum += word.length();
+        }
+  	System.out.println(""+sum);
+
+
+    }
+}
+
+    }
+}

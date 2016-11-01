@@ -1,0 +1,26 @@
+//////////////////피보나치 ///////////////////////////////
+
+package Main;
+
+import java.util.Scanner;
+
+class Main {
+	public static void main(String[] args) {
+		int N;
+		Scanner scan = new Scanner(System.in);
+		N = scan.nextInt();
+		fibonachi(N - 1, 0, 1);
+	}
+
+	public static void fibonachi(int fibo, int first, int second) {
+		int[] num = new int[3];
+		num[0] = first;
+		num[1] = second;
+		if (fibo == 0) {
+			System.out.println(num[1]);
+			return;
+		}
+		fibo--;
+		fibonachi(fibo, num[1], num[0] + num[1]);
+	}
+}

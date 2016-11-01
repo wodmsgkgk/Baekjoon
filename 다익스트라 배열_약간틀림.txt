@@ -1,0 +1,82 @@
+///////////////////큐 ///////////////////////////////
+
+package Main;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+	static int[][] adjacencyMatrix; // 인접행렬
+	static boolean[] isVisits; // 정점의 방문 확인
+	static int vCount; // 정점의 수
+	static int eCount; // 간선의 수
+	static int[] dis;
+	static Queue queue;
+	public static final int INF = 0x7FFFFFFF;
+
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		queue = new LinkedList<Integer>();
+		vCount = scanner.nextInt();
+		eCount = scanner.nextInt();
+		int start = scanner.nextInt();
+		adjacencyMatrix = new int[vCount + 1][vCount + 1];
+		isVisits = new boolean[vCount + 1];
+		dis = new int[vCount + 1];
+
+		for (int i = 1; i <= vCount; i++)
+			for (int j = 1; j <= vCount; j++)
+				adjacencyMatrix[i][j] = INF;
+
+		for (int j = 1; j <= vCount; j++){
+			dis[j] = INF;
+			isVisits[j] = false;
+		}
+
+		dis[start] = 0;
+
+		for (int i = 1; i <= eCount; i++) {
+			int u = scanner.nextInt();
+			int v = scanner.nextInt();
+			int w = scanner.nextInt();
+
+			if (adjacencyMatrix[u][v] > w)
+				adjacencyMatrix[u][v] = w;
+		}
+
+		dijkstra(start);
+
+		for (int i = 1; i <= vCount; i++) {
+			if (dis[i] == INF)
+				System.out.println("INF");
+			else
+				System.out.println(dis[i]);
+		}
+
+	}
+
+	public static void dijkstra(int v) {
+		if (!isVisits[v]) {
+			isVisits[v] = true;
+			for (int i = 1; i <= vCount; i++) {
+				if (adjacencyMatrix[v][i] <= 10) {
+					if (dis[i] > dis[v] + adjacencyMatrix[v][i]) {
+						dis[i] = dis[v] + adjacencyMatrix[v][i];
+					}
+				}
+			}
+			int index = vCount+1;
+			int min = INF;
+			for (int i = 1; i <= vCount; i++) {
+				if (!isVisits[i] && min > dis[i]) {
+					index = i;
+					min = dis[i];
+				}
+			}
+			if(index <= vCount) dijkstra(index);
+		}
+	}
+}

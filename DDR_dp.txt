@@ -1,0 +1,61 @@
+///////////////////? ///////////////////////////////
+
+package Main;
+
+import java.util.Scanner;
+
+public class Main {
+	static int[][] dump;
+	static int[] arr;
+	static int[][][] T;
+	static int count=0;
+	
+	public static void main(String[] args) {
+		
+		Scanner scanner = new Scanner(System.in);
+		boolean flag = false;
+		arr = new int[100001];
+		dump = new int[5][5];
+		
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				if(i==j) dump[i][j] = 1;
+				else if (i ==0) dump[i][j] = 2;
+				else if(i+2 == j)dump[i][j] = 4;
+				else if(i == j+2)dump[i][j] = 4;
+				else dump[i][j] = 3;
+			}
+		}
+		
+		while(true) {
+			arr[count] = scanner.nextInt();
+			if(arr[count] == 0) break;
+			count++;
+		}
+		T = new int[count][5][5];
+		System.out.println(ddr(arr[0],0,1)+2);
+		
+		
+		
+	}
+
+	public static int ddr(int j, int k , int ma) {
+		int a = Integer.MAX_VALUE;
+		int b = Integer.MAX_VALUE;
+		if(count == ma) return 0;
+		
+		if(T[ma][j][k] == 0){
+		a = dump[j][arr[ma]] + ddr(arr[ma],k,ma+1);
+		b = dump[k][arr[ma]] + ddr(j,arr[ma],ma+1);
+		T[ma][j][k] = min(a,b);
+		}else{
+		 return T[ma][j][k];
+		}
+		//System.out.println("ma : "+ ma + " j : "+j+" k : "+k+ " power : "+min(a,b));
+		return min(a,b);
+	}
+	public static int min(int a, int b){
+		if(a>b) return b;
+		else return a;
+	}
+}

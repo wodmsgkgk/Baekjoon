@@ -1,0 +1,202 @@
+///////////////////Ω∫≈√3 ///////////////////////////////
+
+package Main;
+
+import java.math.BigInteger;
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		int n = 0;
+		int p = 0;
+		int flag = 0;
+		int buf = -10;
+		boolean lock_flag = false;
+		String str;
+
+		Scanner scan = new Scanner(System.in);
+		str = scan.nextLine();
+		char[] num = new char[str.length()];
+		BigInteger[] stack_n = new BigInteger[str.length()];
+		char[] stack_p = new char[str.length()];
+
+		for (int i = 0; i < str.length(); i++)
+			num[i] = str.charAt(i);
+
+		for (int i = 0; i < str.length(); i++) {
+			switch (num[i]) {
+			case ')':
+				flag--;
+				while (stack_p[p - 1] != '(') {
+					if (p < 2) {
+						lock_flag = true;
+						break;
+					}
+					switch (stack_p[p - 1]) {
+					case '/':
+						if (stack_n[n - 1].compareTo(BigInteger.valueOf(0)) == 0) {
+							lock_flag = true;
+							break;
+						}
+						stack_n[n - 2] = stack_n[n - 2].divide(stack_n[n - 1]);
+						n--;
+						break;
+					case '*':
+						stack_n[n - 2] = stack_n[n - 1].multiply(stack_n[n - 2]);
+						n--;
+						break;
+					case '+':
+						stack_n[n - 2] = stack_n[n - 1].add(stack_n[n - 2]);
+						n--;
+						break;
+					case '-':
+						stack_n[n - 2] = stack_n[n - 2].subtract(stack_n[n - 1]);
+						n--;
+						break;
+					default:
+						break;
+					}
+					p--;
+				}
+				p--;
+				break;
+			case '/':
+				//if (n < 2 || stack_p[p - 1] == '+' || stack_p[p - 1] == '-') {
+					stack_p[p] = num[i];
+					p++;
+				/*} else {
+					if (stack_n[n - 1].compareTo(BigInteger.valueOf(0)) == 0) {
+						lock_flag = true;
+						break;
+					}
+					stack_n[n - 2] = stack_n[n - 2].divide(stack_n[n - 1]);
+					n--;
+				}*/
+				break;
+			case '*':
+				//if (n < 2 || stack_p[p - 1] == '+' || stack_p[p - 1] == '-') {
+					stack_p[p] = num[i];
+					p++;
+				/*} else {
+					stack_n[n - 2] = stack_n[n - 1].multiply(stack_n[n - 2]);
+					n--;
+				}*/
+				break;
+			case '+':
+				if (n >= 2) {
+					if (p > 0) {
+						if (stack_p[p - 1] == '*') {
+							stack_n[n - 2] = stack_n[n - 1].multiply(stack_n[n - 2]);
+							n--;
+							p--;
+						}
+					}
+					if (p > 0) {
+						if (stack_p[p - 1] == '/') {
+							if (stack_n[n - 1].compareTo(BigInteger.valueOf(0)) == 0) {
+								lock_flag = true;
+								break;
+							}
+							stack_n[n - 2] = stack_n[n - 2].divide(stack_n[n - 1]);
+							n--;
+							p--;
+						}
+					}
+				}
+
+				if (n < 2 + flag) {
+					stack_p[p] = num[i];
+					p++;
+				} else {
+					stack_n[n - 2] = stack_n[n - 1].add(stack_n[n - 2]);
+					n--;
+				}
+				break;
+			case '-':
+				if (n >= 2) {
+					if (p > 0) {
+						if (stack_p[p - 1] == '*') {
+							stack_n[n - 2] = stack_n[n - 2].multiply(stack_n[n - 1]);
+							n--;
+							p--;
+						}
+					}
+					if (p > 0) {
+						if (stack_p[p - 1] == '/') {
+							if (stack_n[n - 1].compareTo(BigInteger.valueOf(0)) == 0) {
+								lock_flag = true;
+								break;
+							}
+							stack_n[n - 2] = stack_n[n - 1].divide(stack_n[n - 2]);
+							n--;
+							p--;
+						}
+					}
+				}
+				if (n < 2 + flag) {
+					stack_p[p] = num[i];
+					p++;
+				} else {
+					stack_n[n - 2] = stack_n[n - 1].subtract(stack_n[n - 2]);
+					n--;
+				}
+				break;
+			case '(':
+				stack_p[p] = num[i];
+				p++;
+				flag++;
+				break;
+			default:
+				if (buf + 1 == i) {
+					stack_n[n - 1] = stack_n[n - 1].multiply(BigInteger.valueOf(10))
+							.add(BigInteger.valueOf((int) num[i] - 48));
+				} else {
+					stack_n[n] = BigInteger.valueOf((int) num[i] - 48);
+					n++;
+				}
+				buf = i;
+				break;
+			}
+		}
+
+		for (int i = p; i > 0; i--) {
+			if (n == 1) {
+				lock_flag = true;
+				break;
+			}
+			switch (stack_p[i - 1]) {
+			case '/':
+				if (stack_n[n - 1].compareTo(BigInteger.valueOf(0)) == 0) {
+					lock_flag = true;
+					break;
+				}
+				stack_n[n - 2] = stack_n[n - 2].divide(stack_n[n - 1]);
+				n--;
+				break;
+			case '*':
+				stack_n[n - 2] = stack_n[n - 1].multiply(stack_n[n - 2]);
+				n--;
+				break;
+			case '+':
+				stack_n[n - 2] = stack_n[n - 1].add(stack_n[n - 2]);
+				n--;
+				break;
+			case '-':
+				stack_n[n - 2] = stack_n[n - 2].subtract(stack_n[n - 1]);
+				n--;
+				break;
+			default:
+				lock_flag = true;
+				break;
+			}
+		}
+
+		// for (int i = 0; i < str.length(); i++)
+		if (lock_flag) {
+			System.out.println("ROCK");
+		} else {
+			System.out.println(stack_n[0]);
+		}
+	}
+}

@@ -1,0 +1,47 @@
+package Main;
+
+import java.util.Scanner;
+
+public class Main {
+	static final int R = 0;
+	static final int G = 1;
+	static final int B = 2;
+	static int N;
+	static int[][] arr = new int[1001][3];
+	
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+	    N = scanner.nextInt();
+	    
+	    for(int i = 0 ; i < N ; i++){
+	    	int a = scanner.nextInt();
+	    	int b = scanner.nextInt();
+	    	int c = scanner.nextInt();
+	    	arr[i][R] = a;
+	    	arr[i][G] = b;
+	    	arr[i][B] = c;
+	    }
+	    System.out.println(calc(0, -1));
+	}
+	
+	public static int min(int a, int b){
+		if(a>b) return b;
+		else return a;
+	}
+	
+	public static int calc(int count, int pre){
+		int x = Integer.MAX_VALUE, y = Integer.MAX_VALUE, z = Integer.MAX_VALUE;
+		
+		if (count == N)
+	        return 0;
+		
+		if(pre != R)
+			x = calc(count + 1, R) + arr[count][R]; 
+		if(pre != G)
+			y = calc(count + 1, G) + arr[count][G];
+		if(pre != B)
+			z = calc(count + 1, B) + arr[count][B];
+		
+		return min(min(x,y),min(y,z));
+	}
+}

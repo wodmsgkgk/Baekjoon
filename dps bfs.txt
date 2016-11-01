@@ -1,0 +1,68 @@
+///////////////////큐 ///////////////////////////////
+
+package Main;
+
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+	static int[][] adjacencyMatrix; // 인접행렬
+	static boolean[] isVisits; // 정점의 방문 확인
+	static boolean[] isVisits_q; // 정점의 방문 확인
+	static int vCount; // 정점의 수
+	static int eCount; // 간선의 수
+	static Queue queue;
+
+	public static void main(String[] args) {
+
+		Scanner scanner = new Scanner(System.in);
+		queue = new LinkedList<Integer>();
+		vCount = scanner.nextInt();
+		eCount = scanner.nextInt();
+		int start = scanner.nextInt();
+		adjacencyMatrix = new int[vCount + 1][vCount + 1];
+		isVisits = new boolean[vCount + 1];
+		isVisits_q = new boolean[vCount + 1];
+
+		for (int i = 0; i < eCount; i++) {
+			int t1 = scanner.nextInt();
+			int t2 = scanner.nextInt();
+
+			adjacencyMatrix[t1][t2] = 1;
+			adjacencyMatrix[t2][t1] = 1;
+		}
+		System.out.println(start);
+		dfs(start);
+		System.out.println(start);
+		bfs(start);
+
+	}
+
+	public static void dfs(int v) {
+		isVisits[v] = true;
+		for (int i = 1; i <= vCount; i++) {
+			if (adjacencyMatrix[v][i] == 1 && !isVisits[i]) {
+				System.out.println(i);
+				dfs(i);
+			}
+		}
+
+	}
+
+	public static void bfs(int v) {
+		isVisits_q[v] = true;
+		queue.add(v); // Enqueue
+
+		while (!queue.isEmpty()) {
+			v = (int) queue.poll(); // Dequeue
+			for (int i = 1; i <= vCount; i++) {
+				if (adjacencyMatrix[v][i] == 1 && !isVisits_q[i]) {
+					System.out.println(i);
+					isVisits_q[i] = true;
+					queue.add(i); // Enqueue
+				}
+			}
+		}
+	}
+}

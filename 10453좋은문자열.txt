@@ -1,0 +1,49 @@
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+		int n = Integer.parseInt(scanner.next());
+		String[] str1 = new String[n];
+		String[] str2 = new String[n];
+		for (int i = 0; i < n; i++) {
+			str1[i] = scanner.next();
+			str2[i] = scanner.next();
+		}
+		for (int m = 0; m < n; m++) {
+			int len1 = str1[m].length();
+			int len2 = str2[m].length();
+			int[] arr1 = new int[len1+1];
+			int[] arr2 = new int[len2+1];
+			int num1 = 0;
+			int num2 = 0;
+			int sum = 0;
+			
+			if (len1 == len2) {
+				for (int i = len1 - 1; i >= 0; i--) {
+					if (str1[m].charAt(i) == 'a') {
+						arr1[num1++] = i;
+					}
+					if (str2[m].charAt(i) == 'a') {
+						arr2[num2++] = i;
+					}
+				}
+				if(num1 ==num2){
+					for(int i = 0;i<=num1;i++){
+						if(arr1[i] > arr2[i]){
+							sum += arr1[i] - arr2[i];
+						}else if(arr1[i] < arr2[i]){
+							sum += arr2[i] - arr1[i];	
+						}
+					}
+					System.out.println(sum);
+				}else{
+					System.out.println("-1");
+				}
+			} else {
+				System.out.println("-1");
+			}
+		}
+	}
+}
