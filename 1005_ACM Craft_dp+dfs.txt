@@ -1,0 +1,81 @@
+import java.util.Scanner;
+import java.util.Stack;
+
+class Main {
+	static boolean[] isVisits; 		// 정점의 방문 확인
+	static int N, T, K, finalNum;	//정점, 테스트, 간선, 최종값 수
+	static int[][] odd;				//간선 저장
+	static Stack<Integer> st = new Stack<Integer>(); //위상정렬용
+
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		T = scan.nextInt();						//테스트 횟수
+		int[] resultNum = new int[T];			//결과값
+		int cnt = 0;							//테스트 카운트
+
+		while (T-- > 0) {
+			N = scan.nextInt();
+			K = scan.nextInt();
+			isVisits = new boolean[N+1];
+			int[] D = new int[N + 1];
+			int[] dp = new int[N + 1];
+			odd = new int[N+1][N+1];
+			boolean[] startPoint =  new boolean[N+1];
+
+			for (int i = 1; i <= N; i++) {
+				D[i] = scan.nextInt();
+			}
+
+			for (int i = 1; i <= K; i++) {
+				int start = scan.nextInt();
+				int end = scan.nextInt();
+				odd[start][end] = 1;
+				startPoint[end] = true;
+			}
+			
+			finalNum = scan.nextInt();
+
+			//시작점들 찾아서 dfs실행
+			for(int i = 1 ; i<=N;i++){
+				if(!startPoint[i]){
+					dfs(i);
+					dp[i] = D[i];
+				}
+			}
+			
+			//위상정렬순으로 최대값 구하기
+			while(!st.isEmpty()){
+				int a = st.pop();
+				for(int i = 1;i<=N;i++){
+					if(odd[a][i] ==1)
+						dp[i] = max(dp[a]+D[i],dp[i]);
+				}
+			}
+			resultNum[cnt++] = dp[finalNum];
+
+		}
+		
+		//모든 테스트값 출력
+		for (int i = 0; i < cnt; i++) {
+			System.out.println(resultNum[i]);
+		}
+
+	}
+	
+	//////dfs///////
+	public static void dfs(int v) {
+		isVisits[v] = true;
+		for (int i = 1; i <= N; i++) {
+			if (odd[v][i] == 1 && !isVisits[i]) {
+				dfs(i);
+			}
+		}
+		st.push(v);
+	}
+	
+	///////최대값 찾는 함수//////////
+	public static int max(int a, int b) {
+		return (a > b) ? a : b;
+	}
+
+}
